@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">E-Commerce App</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="home">Home</string>
+    <string name="my_profile">My Profile</string>
+    <string name="my_cart">My Cart</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="sign_in">SIGN IN</string>
+    <string name="sign_up">SIGN UP</string>
+    <string name="name">UserName</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="dont_have_an_account">Don\'t have an account?</string>
+    <string name="sign_up_lower_case">Sign Up</string>
+    <string name="login_failed">Login failed. Please check your credentials and try again.</string>
+    <string name="register_failed">Registration failed. Please try again later.</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="reset_password_message">We will send you password reset link on your Email</string>
+    <string name="cancel">Cancel</string>
+    <string name="send">Send</string>
+    <string name="send_mail">Reset Link was sent to your email</string>
+    <string name="empyt_mail">Email address is empty, so the reset link couldn\'t be sent</string>
+    <string name="add_to_cart">Add To Cart</string>
+    <string name="all_products">All Products</string>
+    <string name="total">TOTAL</string>
+    <string name="buy">BUY</string>
+    <string name="my_order">My Order</string>
+    <string name="my_score">My Score</string>
+    <string name="payment_information">Payment Information</string>
+    <string name="notification">Notification</string>
+    <string name="help">Help</string>
+    <string name="log_out">Log Out</string>
+    <string name="basket_description">You must be logged in to continue</string>
+    <string name="log_out_dialog">Are you sure you want to log out?</string>
+    <string name="exit">Exit</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="welcome">Welcome</string>
+    <string name="welcome_dialog">Welcome to the E-Commerce application</string>
+    <string name="ok">OK</string>
+    <string name="select_language">Select Language</string>
+    <string name="english">English</string>
+    <string name="turkish">Turkish</string>
+    <string name="german">German</string>
+    <string name="french">French</string>
+    <string name="product_added_to_cart">Product added to cart</string>
+    <string name="product_already_in_cart">The product is already in your cart</string>
+
+</resources>
