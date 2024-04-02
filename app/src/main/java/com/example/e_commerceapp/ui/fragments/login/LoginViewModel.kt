@@ -9,7 +9,6 @@ import kotlinx.coroutines.launch
 
 class LoginViewModel : BaseViewModel() {
 
-    //private val sharedPreferences = application.getSharedPreferences("user_session",Context.MODE_PRIVATE)
 
     private val _loginResult = MutableLiveData<Boolean>()
     val loginResult: LiveData<Boolean> = _loginResult
@@ -42,13 +41,4 @@ class LoginViewModel : BaseViewModel() {
             _resetPassword.value = "Please provide an email address."
         }
     }
-    /*
-        private fun saveUser(email: String, password: String){
-            val editor = sharedPreferences.edit()
-            editor.putString("email",email)
-            editor.putString("password",password)
-            editor.apply()
-        }
-
-     */
 }

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.e_commerceapp.R
 import com.example.e_commerceapp.base.BaseFragment
@@ -15,6 +14,7 @@ import com.example.e_commerceapp.util.Constants.EMAIL
 import com.example.e_commerceapp.util.navigateSafe
 import com.example.e_commerceapp.util.observeNonNull
 import com.example.e_commerceapp.util.setUpBottomSheetDialog
+import com.example.e_commerceapp.util.showMessage
 import com.example.e_commerceapp.util.togglePasswordVisibility
 import com.google.android.material.snackbar.Snackbar
 
@@ -31,7 +31,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupPasswordVisibilityToggle()
-        clickForSignUp()
         setUpAppBar()
     }
 
@@ -53,6 +52,10 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
                     viewModel.resetPassword(email)
                 }
             }
+
+            binding?.textViewContinueWithRegister?.setOnClickListener {
+                navigateSafe(R.id.action_loginFragment_to_registerFragment)
+            }
         }
     }
 
@@ -62,8 +65,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
                 if (it) {
                     navigateSafe(R.id.action_loginFragment_to_profileFragment)
                 } else {
-                    Toast.makeText(mContext, getString(R.string.login_failed), Toast.LENGTH_SHORT)
-                        .show()
+                    showMessage(mContext,getString(R.string.login_failed))
                 }
             }
 
@@ -94,11 +96,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
         }
     }
 
-    private fun clickForSignUp() {
-        binding?.textViewContinueWithRegister?.setOnClickListener {
-            navigateSafe(R.id.action_loginFragment_to_registerFragment)
-        }
-    }
 
     private fun setUpAppBar() {
         AppUtils.updateAppBarTitle(mContext as AppCompatActivity, getString(R.string.login))

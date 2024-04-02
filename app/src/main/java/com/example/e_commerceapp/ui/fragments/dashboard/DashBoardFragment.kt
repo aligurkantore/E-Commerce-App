@@ -25,7 +25,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class DashBoardFragment : BaseFragment<FragmentDashBoardBinding, DashBoardViewModel>() {
 
     private lateinit var adapterCategory: CategoryAdapter
-    private lateinit var adapterProduct: ProductAdapter
+    private var adapterProduct: ProductAdapter? = null
 
     override val viewModelClass: Class<out DashBoardViewModel>
         get() = DashBoardViewModel::class.java
@@ -39,6 +39,7 @@ class DashBoardFragment : BaseFragment<FragmentDashBoardBinding, DashBoardViewMo
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        progressBarUtil.showProgressBar()
         viewModel.apply {
             getProducts()
             getCategories()
@@ -52,6 +53,7 @@ class DashBoardFragment : BaseFragment<FragmentDashBoardBinding, DashBoardViewMo
         viewModel.apply {
             productLiveData.observeNonNull(viewLifecycleOwner) { product ->
                 setUpProductAdapter(product)
+                progressBarUtil.hideProgressBar()
             }
 
             categoryLiveData.observeNonNull(viewLifecycleOwner) { categoryNameList ->
@@ -66,7 +68,7 @@ class DashBoardFragment : BaseFragment<FragmentDashBoardBinding, DashBoardViewMo
 
     private fun setUpProductAdapter(data: List<ProductResponseDataItem>) {
         adapterProduct =
-            ProductAdapter(data, ::onClickAdapterItem, object : ProductAdapter.ItemClickListener {
+            ProductAdapter(mContext, data, ::onClickAdapterItem, object : ProductAdapter.ItemClickListener {
                 override fun onAddToCartClicked(data: ProductResponseDataItem) {
                     checkUserLoginStatus(data)
                 }
@@ -102,7 +104,6 @@ class DashBoardFragment : BaseFragment<FragmentDashBoardBinding, DashBoardViewMo
     private fun getProductsByCategory(category: String): List<ProductResponseDataItem>? {
         return viewModel.productLiveData.value?.filter { it.category == category }
     }
-
 
     private fun checkUserLoginStatus(data: ProductResponseDataItem) {
         if (viewModel.isLoggedIn()) FireBaseDataManager.addToCart(mContext, data)

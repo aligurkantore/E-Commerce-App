@@ -11,7 +11,7 @@
         android:id="@+id/image_view_product"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:scaleType="centerCrop"
+        android:scaleType="fitXY"
         android:src="@drawable/ic_launcher_background" />
 
     <TextView
@@ -20,6 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:gravity="center"
+        android:textColor="@color/black"
         android:textSize="24sp"
         android:textStyle="bold"
         tools:text="Product Name" />
@@ -31,8 +32,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:gravity="center"
-        android:textSize="18sp"
-        tools:text="Product Name" />
+        android:textSize="20sp"
+        tools:text="Product Description" />
 
     <TextView
         android:id="@+id/text_view_price"
@@ -40,7 +41,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:gravity="center"
-        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:textSize="26sp"
         android:textStyle="bold"
         tools:text="99.99$" />
 
@@ -53,6 +55,11 @@
         android:numStars="5"
         android:rating="4.5"
         android:stepSize="0.1" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button_add_to_cart"

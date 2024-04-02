@@ -9,32 +9,42 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.e_commerceapp.R
+import com.example.e_commerceapp.adapter.currency.CurrencyAdapter
 import com.example.e_commerceapp.adapter.language.LanguageAdapter
 import com.example.e_commerceapp.adapter.profile.ProfileAdapter
 import com.example.e_commerceapp.base.BaseFragment
 import com.example.e_commerceapp.databinding.FragmentProfileBinding
 import com.example.e_commerceapp.util.AppUtils
 import com.example.e_commerceapp.base.BaseShared
+import com.example.e_commerceapp.models.datamodels.profile.Currency
+import com.example.e_commerceapp.models.datamodels.profile.LanguageModel
 import com.example.e_commerceapp.util.Constants.CATEGORY
+import com.example.e_commerceapp.util.Constants.CURRENCY
 import com.example.e_commerceapp.util.Constants.DE
 import com.example.e_commerceapp.util.Constants.EMAIL
 import com.example.e_commerceapp.util.Constants.EN
+import com.example.e_commerceapp.util.Constants.EUR
 import com.example.e_commerceapp.util.Constants.FLAG
 import com.example.e_commerceapp.util.Constants.FR
+import com.example.e_commerceapp.util.Constants.GBP
+import com.example.e_commerceapp.util.Constants.LANGUAGE
 import com.example.e_commerceapp.util.Constants.LANGUAGE_NAME
 import com.example.e_commerceapp.util.Constants.TR
+import com.example.e_commerceapp.util.Constants.TRY
+import com.example.e_commerceapp.util.Constants.USD
 import com.example.e_commerceapp.util.CustomDialog
 import com.example.e_commerceapp.util.SetCategories
 import com.example.e_commerceapp.util.changeLanguage
 import com.example.e_commerceapp.util.goneIf
 import com.example.e_commerceapp.util.navigateSafe
-import com.example.e_commerceapp.util.visibleIf
+import com.example.e_commerceapp.util.observeNonNull
 
 
 class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>() {
 
     private lateinit var profileAdapter: ProfileAdapter
     private lateinit var languageAdapter: LanguageAdapter
+    private lateinit var currencyAdapter: CurrencyAdapter
     private lateinit var setCategories: SetCategories
     private var isWelcomeDialogShown = false
     private var dialog: Dialog? = null
@@ -57,6 +67,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
         setUpAppBar()
         checkUserLoginStatus(viewModel.isLoggedIn())
         updateLanguageViews()
+        updateCurrencyViews()
     }
 
     override fun setUpListeners() {
@@ -72,14 +83,28 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
             linearSelectLanguage.setOnClickListener {
                 showLanguagePopUp()
             }
-        }
 
+            linearSelectCurrency.setOnClickListener {
+                showCurrencyPopUp()
+            }
+        }
     }
 
-    override fun setUpObservers() {}
+    override fun setUpObservers() {
+        viewModel.selectedCurrency.observeNonNull(viewLifecycleOwner) {
+            saveCurrency(it.currency)
+            binding?.textCurrency?.text = it.currency
+        }
+    }
 
     private fun setUpAdapter() {
-        profileAdapter = ProfileAdapter(setCategories.setProfileCategories(mContext),
+        val allCategories = setCategories.setProfileCategories(mContext)
+        val notLoggedInCustomer =
+            allCategories.filterIndexed { index, _ -> listOf(2, 3, 4, 6).contains(index) }
+        val isLoggedIn = viewModel.isLoggedIn()
+
+        profileAdapter = ProfileAdapter(
+            if (isLoggedIn) allCategories else notLoggedInCustomer,
             object : ProfileAdapter.ItemClickListener {
                 override fun onClick(categoryName: String, position: Int) {
                     BaseShared.saveString(mContext, CATEGORY, categoryName)
@@ -98,7 +123,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
 
     private fun checkUserLoginStatus(isVisible: Boolean) {
         binding?.apply {
-            recyclerViewProfile visibleIf isVisible
             buttonLogin goneIf isVisible
             buttonRegister goneIf isVisible
             val email: String? = BaseShared.getString(mContext, EMAIL, "")
@@ -110,56 +134,62 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
         }
     }
 
-    private fun saveLanguageAndFlag(languageName: String, flag: Int){
-        BaseShared.saveString(mContext,LANGUAGE_NAME,languageName)
-        BaseShared.saveInt(mContext,FLAG,flag)
-    }
 
     private fun showLanguagePopUp() {
         val languageList = setCategories.setLanguages(mContext)
         languageAdapter = LanguageAdapter(languageList) { language ->
             when (language) {
-                0 -> {
-                    context?.changeLanguage(EN)
-                    saveLanguageAndFlag(getString(R.string.english), R.drawable.united_kingdom)
-                }
-
                 1 -> {
-                    context?.changeLanguage(TR)
-                    saveLanguageAndFlag(getString(R.string.turkish), R.drawable.turkey)
+                    LanguageModel(
+                        stringId = R.string.turkish,
+                        drawableId = R.drawable.turkey,
+                        lang = TR
+                    )
                 }
 
                 2 -> {
-                    context?.changeLanguage(DE)
-                    saveLanguageAndFlag(getString(R.string.german), R.drawable.germany)
+                    LanguageModel(
+                        stringId = R.string.german,
+                        drawableId = R.drawable.germany,
+                        lang = DE
+                    )
                 }
 
                 3 -> {
-                    context?.changeLanguage(FR)
-                    saveLanguageAndFlag(getString(R.string.french), R.drawable.france)
+                    LanguageModel(
+                        stringId = R.string.french,
+                        drawableId = R.drawable.france,
+                        lang = FR
+                    )
                 }
+
+                else -> {
+                    LanguageModel(
+                        stringId = R.string.english,
+                        drawableId = R.drawable.united_kingdom,
+                        lang = EN
+                    )
+                }
+            }.also {
+                context?.changeLanguage(it.lang)
+                BaseShared.saveString(mContext, LANGUAGE, it.lang)
+                saveLanguageAndFlag(getString(it.stringId), it.drawableId)
             }
             requireActivity().recreate()
         }
 
-        dialog = Dialog(mContext)
-        dialog?.apply {
-            setContentView(R.layout.pop_up_language)
-            window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT)
-        }
+        setUpPopUp(languageAdapter)
+    }
 
-        val recyclerViewLanguage = dialog?.findViewById<RecyclerView>(R.id.recycler_view_language)
-        recyclerViewLanguage?.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = languageAdapter
-        }
-        dialog?.show()
+    private fun saveLanguageAndFlag(languageName: String, flag: Int) {
+        BaseShared.saveString(mContext, LANGUAGE_NAME, languageName)
+        BaseShared.saveInt(mContext, FLAG, flag)
     }
 
     private fun updateLanguageViews() {
-        val selectedLanguage = BaseShared.getString(mContext, LANGUAGE_NAME, getString(R.string.english)) ?: ""
-        val selectedFlag = BaseShared.getInt(mContext, FLAG, R.drawable.united_kingdom)
+        val selectedLanguage =
+            BaseShared.getString(mContext, LANGUAGE_NAME, "") ?: ""
+        val selectedFlag = BaseShared.getInt(mContext, FLAG, 0)
 
         binding?.apply {
             textLanguages.text = selectedLanguage
@@ -167,6 +197,52 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
         }
     }
 
+    private fun showCurrencyPopUp() {
+        val currencyList = setCategories.setCurrency()
+        currencyAdapter = CurrencyAdapter(currencyList) { currency ->
+            val selectedCurrency = when (currency) {
+                1 -> GBP
+                2 -> TRY
+                3 -> EUR
+                else -> USD
+            }
+            viewModel.setSelectedCurrency(Currency(selectedCurrency))
+            dialog?.dismiss()
+        }
+
+        setUpPopUp(currencyAdapter)
+    }
+
+    private fun saveCurrency(currency: String) {
+        BaseShared.saveString(mContext, CURRENCY, currency)
+    }
+
+    private fun updateCurrencyViews() {
+        val selectedCurrency =
+            BaseShared.getString(mContext, CURRENCY, USD) ?: ""
+
+        binding?.apply {
+            textCurrency.text = selectedCurrency
+        }
+    }
+
+    private fun setUpPopUp(adapter: RecyclerView.Adapter<*>) {
+        dialog = Dialog(mContext)
+        dialog?.apply {
+            setContentView(R.layout.pop_up_language_currency)
+            window?.setLayout(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+        }
+
+        val recyclerView = dialog?.findViewById<RecyclerView>(R.id.recycler_view_language_currency)
+        recyclerView?.apply {
+            layoutManager = LinearLayoutManager(context)
+            this.adapter = adapter
+        }
+        dialog?.show()
+    }
 
     private fun showWelcomeDialog() {
         CustomDialog(
@@ -201,5 +277,4 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
         super.onDestroyView()
         dialog?.dismiss()
     }
-
 }

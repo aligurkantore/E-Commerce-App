@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.e_commerceapp.R
 import com.example.e_commerceapp.base.BaseFragment
@@ -14,6 +13,7 @@ import com.example.e_commerceapp.base.BaseShared
 import com.example.e_commerceapp.util.Constants.EMAIL
 import com.example.e_commerceapp.util.navigateSafe
 import com.example.e_commerceapp.util.observeNonNull
+import com.example.e_commerceapp.util.showMessage
 import com.example.e_commerceapp.util.togglePasswordVisibility
 
 class RegisterFragment : BaseFragment<FragmentRegisterBinding, RegisterViewModel>() {
@@ -52,8 +52,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding, RegisterViewModel
                 if (it) {
                     navigateSafe(R.id.action_registerFragment_to_profileFragment)
                 } else {
-                    Toast.makeText(mContext, getString(R.string.register_failed), Toast.LENGTH_SHORT)
-                        .show()
+                    showMessage(mContext,getString(R.string.register_failed))
                 }
             }
         }

@@ -34,6 +34,7 @@
     <string name="help">Help</string>
     <string name="log_out">Log Out</string>
     <string name="basket_description">You must be logged in to continue</string>
+    <string name="empty_cart_message">Your cart is empty</string>
     <string name="log_out_dialog">Are you sure you want to log out?</string>
     <string name="exit">Exit</string>
     <string name="yes">Yes</string>
@@ -42,6 +43,7 @@
     <string name="welcome_dialog">Welcome to the E-Commerce application</string>
     <string name="ok">OK</string>
     <string name="select_language">Select Language</string>
+    <string name="select_currency">Select Currency</string>
     <string name="english">English</string>
     <string name="turkish">Turkish</string>
     <string name="german">German</string>

@@ -8,6 +8,7 @@ import android.text.method.PasswordTransformationMethod
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -16,6 +17,10 @@ import androidx.lifecycle.LiveData
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.e_commerceapp.R
+import com.example.e_commerceapp.util.Constants.EUR
+import com.example.e_commerceapp.util.Constants.GBP
+import com.example.e_commerceapp.util.Constants.TRY
+import com.example.e_commerceapp.util.Constants.USD
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import java.util.Locale
@@ -24,6 +29,7 @@ fun ImageView.loadImage(url: String) {
     Glide.with(this.context)
         .load(url)
         .centerCrop()
+        .placeholder(R.drawable.no_image)
         .into(this)
 }
 
@@ -75,6 +81,24 @@ fun Context.changeLanguage(languageCode: String) {
     val config = Configuration()
     config.locale = locale
     resources.updateConfiguration(config, resources.displayMetrics)
+}
+
+fun Double.convertCurrency(fromCurrency: String, toCurrency: String): Double {
+    val currencyRates = mapOf(
+        USD to 1.0,
+        GBP to 0.80,
+        EUR to 0.90,
+        TRY to 32.0
+    )
+
+    val rateFrom = currencyRates[fromCurrency] ?: error("Invalid fromCurrency")
+    val rateTo = currencyRates[toCurrency] ?: error("Invalid toCurrency")
+
+    return this * (rateTo / rateFrom)
+}
+
+fun showMessage(context: Context, text: String) {
+    Toast.makeText(context, text, Toast.LENGTH_LONG).show()
 }
 
 fun String.containsTurkishCharacters(): Boolean {

@@ -1,6 +1,5 @@
 package com.example.e_commerceapp.ui.fragments.detail
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -27,12 +26,15 @@ class DetailViewModel @Inject constructor(private val repository: BaseRepository
                 if (response.isSuccessful){
                     response.body()?.let {
                         _productDetailLiveData.postValue(it)
-                        Log.d("agt1", "getSingleProduct:${response.body()} ")
-                        Log.d("agt1", "getSingleProduct:${_productDetailLiveData.postValue(it)} ")
                     }
                 }
             }
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        job?.cancel()
     }
 
 }

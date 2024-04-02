@@ -34,6 +34,7 @@
     <string name="help">Yardım</string>
     <string name="log_out">Çıkış Yap</string>
     <string name="basket_description">Devam etmek için giriş yapmalısınız</string>
+    <string name="empty_cart_message">Sepetinizde ürün bulunmamaktadır</string>
     <string name="log_out_dialog">Çıkış yapmak istediğinizden emin misiniz?</string>
     <string name="exit">Çıkış</string>
     <string name="yes">Evet</string>
@@ -42,6 +43,7 @@
     <string name="welcome_dialog">E-Ticaret uygulamasına hoş geldiniz</string>
     <string name="ok">Tamam</string>
     <string name="select_language">Dil Seçiniz</string>
+    <string name="select_currency">Para Birimi Seçiniz</string>
     <string name="english">İngilizce</string>
     <string name="turkish">Türkçe</string>
     <string name="german">Almanca</string>

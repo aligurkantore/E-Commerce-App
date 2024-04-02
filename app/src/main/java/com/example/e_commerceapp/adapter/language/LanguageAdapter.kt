@@ -20,9 +20,9 @@ class LanguageAdapter(
 
     override fun onBindViewHolder(holder: LanguageVH, position: Int) {
         with(holder.binding) {
-            val data = languageList[position]
-            imageFlag.setImageResource(data.flag)
-            textViewLanguage.text = data.languageName
+            val languageData = languageList[position]
+            imageFlag.setImageResource(languageData.flag)
+            textViewLanguage.text = languageData.languageName
             linearLanguageCategory.setOnClickListener { clickLanguage.invoke(position) }
         }
     }

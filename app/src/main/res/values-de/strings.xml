@@ -34,6 +34,7 @@
     <string name="help">Hilfe</string>
     <string name="log_out">Abmelden</string>
     <string name="basket_description">Sie müssen angemeldet sein, um fortzufahren</string>
+    <string name="empty_cart_message">Ihr Warenkorb ist leer</string>
     <string name="log_out_dialog">Möchten Sie sich wirklich abmelden?</string>
     <string name="exit">Ausgang</string>
     <string name="yes">Ja</string>
@@ -42,6 +43,7 @@
     <string name="welcome_dialog">Willkommen in der E-Commerce-App</string>
     <string name="ok">OK</string>
     <string name="select_language">Sprache auswählen</string>
+    <string name="select_currency">Wählen Sie die Währung aus</string>
     <string name="english">Englisch</string>
     <string name="turkish">Turkisch</string>
     <string name="german">Deutsch</string>

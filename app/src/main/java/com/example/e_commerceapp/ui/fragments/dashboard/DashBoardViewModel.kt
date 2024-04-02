@@ -22,26 +22,7 @@ class DashBoardViewModel @Inject constructor(private val repository: BaseReposit
 
     private val _categoryLiveData = MutableLiveData<Category>()
     val categoryLiveData: LiveData<Category> = _categoryLiveData
-
-
-    /*
-
-        private fun getProducts(limit: Int){
-            viewModelScope.launch {
-                _productLiveData.value = Resource.Loading()
-                try {
-                    val result = repository.getProducts(limit)
-                    _productLiveData.postValue(result)
-                    Log.d("agt", "getProducts:  ${productLiveData.value}")
-                    Log.d("agt1", "getProducts:  ${_productLiveData.value}")
-                }catch (e: Exception){
-                    _productLiveData.value = e.message?.let { Resource.Error(it) }
-                }
-            }
-        }
-
-     */
-
+    
 
     fun getProducts() {
         job = viewModelScope.launch(Dispatchers.IO) {

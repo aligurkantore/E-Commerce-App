@@ -34,6 +34,7 @@
     <string name="help">Aide</string>
     <string name="log_out">Se déconnecter</string>
     <string name="basket_description">Vous devez être connecté pour continuer</string>
+    <string name="empty_cart_message">Votre panier est vide</string>
     <string name="log_out_dialog">Voulez-vous vraiment vous déconnecter ?</string>
     <string name="exit">Quitter</string>
     <string name="yes">Oui</string>
@@ -42,6 +43,7 @@
     <string name="welcome_dialog">Bienvenue dans l\'application E-Commerce</string>
     <string name="ok">OK</string>
     <string name="select_language">Choisir la langue</string>
+    <string name="select_currency">Choisissez la devise</string>
     <string name="english">Anglais</string>
     <string name="turkish">Turc</string>
     <string name="german">Allemand</string>

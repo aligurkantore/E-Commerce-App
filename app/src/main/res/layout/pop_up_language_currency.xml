@@ -6,7 +6,7 @@
     android:padding="16dp">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_language"
+        android:id="@+id/recycler_view_language_currency"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"

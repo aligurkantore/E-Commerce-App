@@ -15,38 +15,31 @@
 
         <ImageView
             android:id="@+id/image_product"
-            android:layout_width="200dp"
-            android:layout_height="100dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginBottom="8dp"
             android:src="@color/black"
+            app:layout_constraintBottom_toTopOf="@+id/line"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/text_title"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:ellipsize="end"
-            android:gravity="center"
+            android:gravity="center_vertical"
             android:maxLines="2"
             android:textColor="@android:color/black"
             android:textSize="18sp"
+            app:layout_constraintEnd_toStartOf="@id/text_count"
             app:layout_constraintStart_toEndOf="@id/image_product"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Product Name" />
 
-        <ImageView
-            android:id="@+id/image_minus"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginBottom="8dp"
-            android:src="@drawable/minus"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/image_product" />
-
         <TextView
-            android:id="@+id/text_view_count"
+            android:id="@+id/text_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -54,9 +47,34 @@
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/image_minus"
-            tools:text="100" />
+            app:layout_constraintBottom_toTopOf="@id/line"
+            app:layout_constraintStart_toEndOf="@id/image_product"
+            tools:text="$99.99" />
+
+        <TextView
+            android:id="@+id/text_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/image_minus"
+            tools:text="1"/>
+
+        <ImageView
+            android:id="@+id/image_minus"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="8dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_minus"
+            app:layout_constraintBottom_toTopOf="@id/text_count"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/image_plus"
@@ -64,9 +82,20 @@
             android:layout_height="20dp"
             android:layout_marginStart="16dp"
             android:layout_marginBottom="8dp"
-            android:src="@drawable/plus"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_plus"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_count" />
+
+        <View
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/text_view_count" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

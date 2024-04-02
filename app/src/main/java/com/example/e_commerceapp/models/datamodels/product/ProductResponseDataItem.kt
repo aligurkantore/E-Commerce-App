@@ -10,4 +10,6 @@ data class ProductResponseDataItem(
     val price: Double? = null,
     val rating: Rating? = null,
     val title: String? = null,
-) : Serializable
+) : Serializable {
+    var count : Int = 1
+}

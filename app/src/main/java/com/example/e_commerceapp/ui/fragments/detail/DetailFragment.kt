@@ -10,6 +10,7 @@ import com.example.e_commerceapp.base.BaseFragment
 import com.example.e_commerceapp.models.datamodels.product.ProductResponseDataItem
 import com.example.e_commerceapp.databinding.FragmentDetailBinding
 import com.example.e_commerceapp.util.Constants.DETAIL
+import com.example.e_commerceapp.util.FireBaseDataManager
 import com.example.e_commerceapp.util.gone
 import com.example.e_commerceapp.util.loadImage
 import com.example.e_commerceapp.util.observeNonNull
@@ -36,9 +37,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
         setArgs()
     }
 
-    override fun setUpListeners() {
-     //   TODO("Not yet implemented")
-    }
+    override fun setUpListeners() {}
 
     override fun setUpObservers() {
         viewModel.productDetailLiveData.observeNonNull(viewLifecycleOwner) {
@@ -47,11 +46,13 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
     }
 
     private fun setArgs() {
-        productId = arguments?.getString(DETAIL)
-        productId?.let {
+        productId = arguments?.getInt(DETAIL).toString()
+        Log.d("agt", "setArgs: $productId")
+        productId.let {
             viewLifecycleOwner.lifecycleScope.launch {
-                viewModel.getSingleProduct(it)
-                Log.d("agt", "setArgs: ${viewModel.getSingleProduct(it)} ")
+                if (it != null) {
+                    viewModel.getSingleProduct(it)
+                }
             }
         }
     }
@@ -61,11 +62,15 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
             data.image?.let { imageViewProduct.loadImage(it) }
             textViewTitle.text = data.title
             textViewDescription.text = data.description
-            textViewPrice.text = String.format("%.2f$", data.price)
+            textViewPrice.text = String.format("$%.2f", data.price)
             data.rating?.rate?.toFloat()?.let { rating ->
                 ratingBar.rating = rating
             } ?: run {
                 ratingBar.gone()
+            }
+
+            buttonAddToCart.setOnClickListener {
+                FireBaseDataManager.addToCart(mContext,data)
             }
         }
     }

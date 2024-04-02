@@ -10,7 +10,6 @@ import com.example.e_commerceapp.util.Constants.CATEGORY
 class CategoryDetailFragment :
     BaseFragment<FragmentCategoryDetailBinding, CategoryDetailViewModel>() {
 
-
     override val viewModelClass: Class<out CategoryDetailViewModel>
         get() = CategoryDetailViewModel::class.java
 
@@ -24,12 +23,10 @@ class CategoryDetailFragment :
 
     override fun setUpListeners() {
         val nameOfCategory = BaseShared.getString(mContext,CATEGORY,"") ?: ""
-        binding?.textViewCategoryName?.text = nameOfCategory ?: ""
+        binding?.textViewCategoryName?.text = nameOfCategory
     }
 
-    override fun setUpObservers() {
-      //  TODO("Not yet implemented")
-    }
+    override fun setUpObservers() {}
 
     override fun onPause() {
         super.onPause()

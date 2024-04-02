@@ -7,7 +7,6 @@ import com.example.e_commerceapp.util.Constants.PREFS_NAME
 
 object BaseShared {
 
-
     private fun getSharedPreferences(context: Context): SharedPreferences {
         return context.getSharedPreferences(PREFS_NAME,Context.MODE_PRIVATE)
     }

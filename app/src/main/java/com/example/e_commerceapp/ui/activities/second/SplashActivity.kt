@@ -6,8 +6,12 @@ import android.os.Bundle
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import com.example.e_commerceapp.R
+import com.example.e_commerceapp.base.BaseShared
 import com.example.e_commerceapp.databinding.ActivitySplashBinding
 import com.example.e_commerceapp.ui.activities.main.MainActivity
+import com.example.e_commerceapp.util.Constants.EN
+import com.example.e_commerceapp.util.Constants.LANGUAGE
+import com.example.e_commerceapp.util.changeLanguage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -21,12 +25,13 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setUpBinding()
+        setUpAnimation()
+        setLanguage()
     }
 
     private fun setUpBinding() {
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setUpAnimation()
     }
 
     private fun setUpAnimation() {
@@ -37,6 +42,13 @@ class SplashActivity : AppCompatActivity() {
             delay(3000)
             startActivity(Intent(this@SplashActivity, MainActivity::class.java))
             finish()
+        }
+    }
+
+    private fun setLanguage(){
+        val language = BaseShared.getString(this, LANGUAGE, EN)
+        if (language != null) {
+            changeLanguage(language)
         }
     }
 }

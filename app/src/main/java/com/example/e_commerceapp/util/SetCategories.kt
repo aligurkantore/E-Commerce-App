@@ -3,7 +3,12 @@ package com.example.e_commerceapp.util
 import android.content.Context
 import com.example.e_commerceapp.R
 import com.example.e_commerceapp.models.datamodels.profile.Category
+import com.example.e_commerceapp.models.datamodels.profile.Currency
 import com.example.e_commerceapp.models.datamodels.profile.Language
+import com.example.e_commerceapp.util.Constants.EUR
+import com.example.e_commerceapp.util.Constants.GBP
+import com.example.e_commerceapp.util.Constants.TRY
+import com.example.e_commerceapp.util.Constants.USD
 import javax.inject.Inject
 
 class SetCategories @Inject constructor() {
@@ -68,5 +73,14 @@ class SetCategories @Inject constructor() {
             Language(context.getString(R.string.french),R.drawable.france)
         )
         return languageList
+    }
+
+    fun setCurrency(): List<Currency>{
+        val currencyList = mutableListOf<Currency>()
+        currencyList.add(Currency(USD))
+        currencyList.add(Currency(GBP))
+        currencyList.add(Currency(TRY))
+        currencyList.add(Currency(EUR))
+        return currencyList
     }
 }
