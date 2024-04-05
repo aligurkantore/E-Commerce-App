@@ -1,6 +1,7 @@
 package com.example.e_commerceapp.ui.fragments.cart
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,13 +9,18 @@ import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.e_commerceapp.R
-import com.example.e_commerceapp.adapter.cart.CartAdapter
+import com.example.e_commerceapp.ui.adapters.cart.CartAdapter
 import com.example.e_commerceapp.base.BaseFragment
+import com.example.e_commerceapp.base.BaseShared
 import com.example.e_commerceapp.models.datamodels.product.ProductResponseDataItem
 import com.example.e_commerceapp.databinding.FragmentCartBinding
 import com.example.e_commerceapp.util.AppUtils
+import com.example.e_commerceapp.helper.FireBaseDataManager
+import com.example.e_commerceapp.util.Constants.DETAIL
 import com.example.e_commerceapp.util.goneIf
 import com.example.e_commerceapp.util.navigateSafe
+import com.example.e_commerceapp.util.navigateSafeWithArgs
+import com.example.e_commerceapp.util.observeNonNull
 import com.example.e_commerceapp.util.visibleIf
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
@@ -48,10 +54,9 @@ class CartFragment : BaseFragment<FragmentCartBinding, CartViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpAdapter()
-        getProducts()
         if (viewModel.isLoggedIn()) {
-            progressBarUtil.hideProgressBar()
             checkUserLoginStatus(true)
+            getProducts()
         } else {
             checkUserLoginStatus(false)
             animationBasket()
@@ -61,20 +66,38 @@ class CartFragment : BaseFragment<FragmentCartBinding, CartViewModel>() {
 
 
     override fun setUpListeners() {
-        binding?.buttonLogin?.setOnClickListener {
-            navigateSafe(R.id.action_cartFragment_to_loginFragment)
+        binding?.apply {
+            buttonLogin.setOnClickListener {
+                navigateSafe(R.id.action_cartFragment_to_loginFragment)
+            }
+
+            buttonBuy.setOnClickListener {
+                FireBaseDataManager.removeFromCart(mContext, cartItems.first().id.toString())
+                navigateSafe(R.id.action_cartFragment_to_orderFragment)
+            }
         }
     }
 
-    override fun setUpObservers() {}
+    override fun setUpObservers() {
+        viewModel.totalPrice.observeNonNull(viewLifecycleOwner){
+            binding?.textViewTotalPrice?.text = it
+        }
+    }
 
     private fun setUpAdapter() {
-        cartAdapter = CartAdapter(mContext, cartItems)
+        cartAdapter = CartAdapter(
+            mContext,
+            cartItems,
+            ::onClickAdapterItem,
+            object : CartAdapter.TotalPriceListener {
+                override fun onTotalPriceUpdated(totalPrice: String) {
+                    binding?.textViewTotalPrice?.text = totalPrice
+                }
+            })
         binding?.recyclerViewCarts?.apply {
             adapter = cartAdapter
             layoutManager = LinearLayoutManager(mContext)
         }
-        cartAdapter.notifyDataSetChanged()
     }
 
     private fun getProducts() {
@@ -93,11 +116,9 @@ class CartFragment : BaseFragment<FragmentCartBinding, CartViewModel>() {
                     }
                 }
                 cartAdapter.notifyDataSetChanged()
-
-                val totalPrice = cartAdapter.calculateTotalPrice()
-                binding?.textViewTotalPrice?.text = String.format("$%.2f", totalPrice)
-
+                updateTotalPrice()
                 progressBarUtil.hideProgressBar()
+                checkItemsInAdapter()
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -106,17 +127,39 @@ class CartFragment : BaseFragment<FragmentCartBinding, CartViewModel>() {
         })
     }
 
+    private fun updateTotalPrice() {
+        val totalPrice = cartAdapter.calculateTotalPrice()
+        binding?.textViewTotalPrice?.text = totalPrice
+    }
+
     private fun checkUserLoginStatus(isLogin: Boolean) {
         binding?.apply {
             imageBasket goneIf isLogin
             textViewCart goneIf isLogin
             textViewCartDescription goneIf isLogin
             buttonLogin goneIf isLogin
-            buttonBuy visibleIf isLogin
             recyclerViewCarts visibleIf isLogin
-            line visibleIf isLogin
-            textViewTotal visibleIf isLogin
-            textViewTotalPrice visibleIf isLogin
+            cardViewAreaBottom visibleIf isLogin
+        }
+    }
+
+    private fun onClickAdapterItem(data: ProductResponseDataItem) {
+        val bundle = Bundle().apply {
+            putSerializable(DETAIL, data.id)
+        }
+        navigateSafeWithArgs(R.id.action_cartFragment_to_detailFragment, bundle)
+    }
+
+    private fun checkItemsInAdapter(){
+        val isCartEmpty = cartItems.isEmpty()
+        binding?.apply {
+            cardViewAreaBottom.visibility = if (isCartEmpty) View.GONE else View.VISIBLE
+            textViewEmptyMessage.visibility = if (isCartEmpty) View.VISIBLE else View.GONE
+            buttonNavigateToDashboard.visibility =
+                if (isCartEmpty) View.VISIBLE else View.GONE
+            buttonNavigateToDashboard.setOnClickListener {
+                navigateSafe(R.id.action_cartFragment_to_dashBoardFragment)
+            }
         }
     }
 
@@ -133,4 +176,5 @@ class CartFragment : BaseFragment<FragmentCartBinding, CartViewModel>() {
     private fun setUpAppBar() {
         AppUtils.updateAppBarTitle(mContext as AppCompatActivity, getString(R.string.my_cart))
     }
+
 }

@@ -1,4 +1,4 @@
-package com.example.e_commerceapp.adapter.profile
+package com.example.e_commerceapp.ui.adapters.profile
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -30,7 +30,12 @@ class ProfileAdapter(
 
             linearProfileCategory.setOnClickListener {
                 selectedPosition = holder.adapterPosition
-                selectedPosition?.let { _selected -> clickListener.onClick(data.categoryName,_selected) }
+                selectedPosition?.let { _selected ->
+                    clickListener.onClick(
+                        data.categoryName,
+                        _selected
+                    )
+                }
             }
         }
     }
@@ -40,6 +45,6 @@ class ProfileAdapter(
     }
 
     interface ItemClickListener {
-        fun onClick(categoryName: String,position: Int)
+        fun onClick(categoryName: String, position: Int)
     }
 }

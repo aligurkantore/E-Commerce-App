@@ -1,4 +1,4 @@
-package com.example.e_commerceapp.adapter.category
+package com.example.e_commerceapp.ui.adapters.category
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,7 +9,7 @@ import com.example.e_commerceapp.databinding.ItemCategoriesBinding
 
 class CategoryAdapter(
     private val categoryList: List<String>,
-    private val clickListener: ItemClickListener,
+    private val clickListener: ItemClickListener
 ) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
 
     private var selectedItemPosition: Int = 0

@@ -1,4 +1,4 @@
-package com.example.e_commerceapp.adapter.product
+package com.example.e_commerceapp.ui.adapters.product
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -8,18 +8,16 @@ import com.example.e_commerceapp.base.BaseShared
 import com.example.e_commerceapp.models.datamodels.product.ProductResponseDataItem
 import com.example.e_commerceapp.databinding.ItemProductBinding
 import com.example.e_commerceapp.util.Constants.CURRENCY
-import com.example.e_commerceapp.util.Constants.EUR
-import com.example.e_commerceapp.util.Constants.GBP
-import com.example.e_commerceapp.util.Constants.TRY
 import com.example.e_commerceapp.util.Constants.USD
-import com.example.e_commerceapp.util.convertCurrency
+import com.example.e_commerceapp.util.convertAndFormatCurrency
+import com.example.e_commerceapp.util.getCurrencySymbols
 import com.example.e_commerceapp.util.loadImage
 
 class ProductAdapter(
     private var context: Context,
     private var productList: List<ProductResponseDataItem>,
     private val navigateToDetail: (ProductResponseDataItem) -> Unit,
-    private val addToCart: ItemClickListener,
+    private val addToCart: ItemClickListener
 ) : RecyclerView.Adapter<ProductAdapter.ProductVH>() {
 
 
@@ -38,18 +36,11 @@ class ProductAdapter(
             textTitle.text = productData.title
 
             val currency = BaseShared.getString(context, CURRENCY, USD)
-            val currencySymbols = mapOf(
-                GBP to "£",
-                TRY to "₺",
-                EUR to "€",
-                USD to "$"
-            )
+            val currencySymbols = context.getCurrencySymbols()
 
-            val convertedPrice = currency?.let { productData.price?.convertCurrency(USD, it) }
-            val currencySymbol = currencySymbols.getOrDefault(currency, "$")
-
-            textPrice.text = String.format("%s%.2f", currencySymbol, convertedPrice ?: productData.price)
-
+            val convertedPrice =
+                productData.price?.convertAndFormatCurrency(USD, currency ?: USD, currencySymbols)
+            textPrice.text = convertedPrice
 
             linearLayoutAddToCart.setOnClickListener { addToCart.onAddToCartClicked(productData) }
             constraintProduct.setOnClickListener { navigateToDetail.invoke(productData) }

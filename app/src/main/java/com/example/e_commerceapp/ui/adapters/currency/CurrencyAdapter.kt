@@ -1,4 +1,4 @@
-package com.example.e_commerceapp.adapter.currency
+package com.example.e_commerceapp.ui.adapters.currency
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,7 +8,7 @@ import com.example.e_commerceapp.models.datamodels.profile.Currency
 
 class CurrencyAdapter(
     private val currencyList: List<Currency>,
-    private val clickCurrency: (Int) -> Unit,
+    private val clickCurrency: (Int) -> Unit
 ) : RecyclerView.Adapter<CurrencyAdapter.CurrencyVH>() {
 
     inner class CurrencyVH(val binding: ItemCurrencyBinding) : RecyclerView.ViewHolder(binding.root)

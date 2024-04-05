@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".ui.fragments.order.OrderFragment">
+
+    <ImageView
+        android:id="@+id/image_order"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/orders" />
+
+    <TextView
+        android:id="@+id/text_view_order"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/order_received"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_navigate_to_dashboard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:background="@drawable/edit_text_background"
+        android:text="@string/go_to_home_page"
+        android:textColor="@color/white"
+        android:textSize="24sp" />
+
+</LinearLayout>

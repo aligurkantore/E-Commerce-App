@@ -35,12 +35,14 @@
     <string name="log_out">Çıkış Yap</string>
     <string name="basket_description">Devam etmek için giriş yapmalısınız</string>
     <string name="empty_cart_message">Sepetinizde ürün bulunmamaktadır</string>
-    <string name="log_out_dialog">Çıkış yapmak istediğinizden emin misiniz?</string>
+    <string name="go_to_home_page">Anasayfaya gidiniz</string>
+    <string name="log_out_dialog">Oturumu kapatmak istediğinize emin misiniz?</string>
+    <string name="confirm_exit_dialog">Uygulamadan çıkmak istediğinize emin misiniz?</string>
     <string name="exit">Çıkış</string>
     <string name="yes">Evet</string>
     <string name="no">Hayır</string>
-    <string name="welcome">Hoş Geldiniz</string>
-    <string name="welcome_dialog">E-Ticaret uygulamasına hoş geldiniz</string>
+    <string name="welcome">HoşGeldiniz</string>
+    <string name="welcome_dialog">E-Ticaret uygulamasına hoşgeldiniz</string>
     <string name="ok">Tamam</string>
     <string name="select_language">Dil Seçiniz</string>
     <string name="select_currency">Para Birimi Seçiniz</string>
@@ -50,4 +52,7 @@
     <string name="french">Fransızca</string>
     <string name="product_added_to_cart">Ürün sepete eklendi</string>
     <string name="product_already_in_cart">Ürün zaten sepetinizde bulunmaktadır</string>
+    <string name="product_removed_from_cart">Ürün sepetinizden silindi</string>
+    <string name="unexpected_error">Beklenmeyen bir hata oluştu</string>
+    <string name="order_received">Siparişiniz alınmıştır</string>
 </resources>

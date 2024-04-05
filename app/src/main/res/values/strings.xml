@@ -35,7 +35,9 @@
     <string name="log_out">Log Out</string>
     <string name="basket_description">You must be logged in to continue</string>
     <string name="empty_cart_message">Your cart is empty</string>
+    <string name="go_to_home_page">Go to Home Page</string>
     <string name="log_out_dialog">Are you sure you want to log out?</string>
+    <string name="confirm_exit_dialog">Are you sure you want to exit the app?</string>
     <string name="exit">Exit</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
@@ -50,5 +52,7 @@
     <string name="french">French</string>
     <string name="product_added_to_cart">Product added to cart</string>
     <string name="product_already_in_cart">The product is already in your cart</string>
-
+    <string name="product_removed_from_cart">Product removed from your cart</string>
+    <string name="unexpected_error">An unexpected error occurred</string>
+    <string name="order_received">Your order has been received</string>
 </resources>

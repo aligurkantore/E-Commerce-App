@@ -1,4 +1,4 @@
-package com.example.e_commerceapp.util
+package com.example.e_commerceapp.ui.dialogs
 
 import android.app.Dialog
 import android.content.Context
@@ -29,7 +29,7 @@ class CustomDialog(
         setListeners()
     }
 
-    private fun setUpBinding(){
+    private fun setUpBinding() {
         binding = MyCustomDialogBinding.inflate(LayoutInflater.from(context))
         setContentView(binding.root)
     }

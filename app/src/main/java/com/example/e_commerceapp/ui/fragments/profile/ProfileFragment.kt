@@ -9,9 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.e_commerceapp.R
-import com.example.e_commerceapp.adapter.currency.CurrencyAdapter
-import com.example.e_commerceapp.adapter.language.LanguageAdapter
-import com.example.e_commerceapp.adapter.profile.ProfileAdapter
+import com.example.e_commerceapp.ui.adapters.currency.CurrencyAdapter
+import com.example.e_commerceapp.ui.adapters.language.LanguageAdapter
+import com.example.e_commerceapp.ui.adapters.profile.ProfileAdapter
 import com.example.e_commerceapp.base.BaseFragment
 import com.example.e_commerceapp.databinding.FragmentProfileBinding
 import com.example.e_commerceapp.util.AppUtils
@@ -32,13 +32,12 @@ import com.example.e_commerceapp.util.Constants.LANGUAGE_NAME
 import com.example.e_commerceapp.util.Constants.TR
 import com.example.e_commerceapp.util.Constants.TRY
 import com.example.e_commerceapp.util.Constants.USD
-import com.example.e_commerceapp.util.CustomDialog
+import com.example.e_commerceapp.ui.dialogs.CustomDialog
 import com.example.e_commerceapp.util.SetCategories
 import com.example.e_commerceapp.util.changeLanguage
 import com.example.e_commerceapp.util.goneIf
 import com.example.e_commerceapp.util.navigateSafe
 import com.example.e_commerceapp.util.observeNonNull
-
 
 class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>() {
 
@@ -102,17 +101,23 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
         val notLoggedInCustomer =
             allCategories.filterIndexed { index, _ -> listOf(2, 3, 4, 6).contains(index) }
         val isLoggedIn = viewModel.isLoggedIn()
+        val categories = if (isLoggedIn) allCategories else notLoggedInCustomer
 
-        profileAdapter = ProfileAdapter(
-            if (isLoggedIn) allCategories else notLoggedInCustomer,
+        profileAdapter = ProfileAdapter(categories,
             object : ProfileAdapter.ItemClickListener {
                 override fun onClick(categoryName: String, position: Int) {
                     BaseShared.saveString(mContext, CATEGORY, categoryName)
-                    when (position) {
-                        2 -> navigateSafe(R.id.action_profileFragment_to_cartFragment)
-                        7 -> showLogoutDialog()
-                        else -> navigateSafe(R.id.action_profileFragment_to_categoryDetailFragment)
+                    val actionId = when {
+                        (isLoggedIn && position == 2) || (!isLoggedIn && position == 0) -> R.id.action_profileFragment_to_cartFragment
+                        isLoggedIn && position == 7 -> {
+                            showLogoutDialog()
+                            return
+                            // return kullanmamın sebebi actionId ye atanmaması ve return ile fundan çıkış
+                        }
+
+                        else -> R.id.action_profileFragment_to_categoryDetailFragment
                     }
+                    navigateSafe(actionId)
                 }
             })
         binding?.recyclerViewProfile?.apply {
@@ -257,14 +262,15 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
     private fun showLogoutDialog() {
         CustomDialog(
             mContext,
-            getString(R.string.exit),
+            getString(R.string.log_out),
             getString(R.string.log_out_dialog),
             getString(R.string.yes),
             getString(R.string.no),
             positiveButtonClickListener = {
                 viewModel.auth.signOut()
                 BaseShared.removeKey(mContext, EMAIL)
-                navigateSafe(R.id.action_profileFragment_to_loginFragment)
+                // navigateSafe(R.id.action_profileFragment_to_loginFragment)
+                requireActivity().recreate()
             }
         ).show()
     }

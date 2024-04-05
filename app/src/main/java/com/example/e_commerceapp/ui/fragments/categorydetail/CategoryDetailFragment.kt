@@ -22,7 +22,7 @@ class CategoryDetailFragment :
 
 
     override fun setUpListeners() {
-        val nameOfCategory = BaseShared.getString(mContext,CATEGORY,"") ?: ""
+        val nameOfCategory = BaseShared.getString(mContext, CATEGORY, "") ?: ""
         binding?.textViewCategoryName?.text = nameOfCategory
     }
 

@@ -35,7 +35,9 @@
     <string name="log_out">Se déconnecter</string>
     <string name="basket_description">Vous devez être connecté pour continuer</string>
     <string name="empty_cart_message">Votre panier est vide</string>
-    <string name="log_out_dialog">Voulez-vous vraiment vous déconnecter ?</string>
+    <string name="go_to_home_page">Aller sur la page d\'accueil</string>
+    <string name="log_out_dialog">Êtes-vous sûr de vouloir vous déconnecter?</string>
+    <string name="confirm_exit_dialog">Êtes-vous sûr de vouloir quitter l\'application ?</string>
     <string name="exit">Quitter</string>
     <string name="yes">Oui</string>
     <string name="no">Non</string>
@@ -50,4 +52,7 @@
     <string name="french">Français</string>
     <string name="product_added_to_cart">Le produit a été ajouté au panier</string>
     <string name="product_already_in_cart">Le produit est déjà dans votre panier</string>
+    <string name="product_removed_from_cart">Le produit a été supprimé de votre panier</string>
+    <string name="unexpected_error">Une erreur inattendue s\'est produite</string>
+    <string name="order_received">Votre commande a été reçue</string>
 </resources>

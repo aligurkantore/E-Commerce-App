@@ -1,4 +1,4 @@
-package com.example.e_commerceapp.adapter.language
+package com.example.e_commerceapp.ui.adapters.language
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,7 +8,7 @@ import com.example.e_commerceapp.databinding.ItemLanguageBinding
 
 class LanguageAdapter(
     private val languageList: List<Language>,
-    private val clickLanguage: (Int) -> Unit,
+    private val clickLanguage: (Int) -> Unit
 ) : RecyclerView.Adapter<LanguageAdapter.LanguageVH>() {
 
     inner class LanguageVH(val binding: ItemLanguageBinding) : RecyclerView.ViewHolder(binding.root)

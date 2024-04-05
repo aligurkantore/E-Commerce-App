@@ -1,6 +1,6 @@
 package com.example.e_commerceapp.ui.fragments.dashboard
 
-import com.example.e_commerceapp.adapter.category.CategoryAdapter
+import com.example.e_commerceapp.ui.adapters.category.CategoryAdapter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,13 +9,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.e_commerceapp.R
-import com.example.e_commerceapp.adapter.product.ProductAdapter
+import com.example.e_commerceapp.ui.adapters.product.ProductAdapter
 import com.example.e_commerceapp.base.BaseFragment
 import com.example.e_commerceapp.models.datamodels.product.ProductResponseDataItem
 import com.example.e_commerceapp.databinding.FragmentDashBoardBinding
 import com.example.e_commerceapp.util.AppUtils
 import com.example.e_commerceapp.util.Constants.DETAIL
-import com.example.e_commerceapp.util.FireBaseDataManager
+import com.example.e_commerceapp.helper.FireBaseDataManager
 import com.example.e_commerceapp.util.navigateSafe
 import com.example.e_commerceapp.util.navigateSafeWithArgs
 import com.example.e_commerceapp.util.observeNonNull
@@ -68,11 +68,15 @@ class DashBoardFragment : BaseFragment<FragmentDashBoardBinding, DashBoardViewMo
 
     private fun setUpProductAdapter(data: List<ProductResponseDataItem>) {
         adapterProduct =
-            ProductAdapter(mContext, data, ::onClickAdapterItem, object : ProductAdapter.ItemClickListener {
-                override fun onAddToCartClicked(data: ProductResponseDataItem) {
-                    checkUserLoginStatus(data)
-                }
-            })
+            ProductAdapter(
+                mContext,
+                data,
+                ::onClickAdapterItem,
+                object : ProductAdapter.ItemClickListener {
+                    override fun onAddToCartClicked(data: ProductResponseDataItem) {
+                        checkUserLoginStatus(data)
+                    }
+                })
         binding?.recyclerViewProducts?.apply {
             adapter = adapterProduct
             layoutManager = GridLayoutManager(mContext, 2)

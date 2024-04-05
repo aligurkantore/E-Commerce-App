@@ -35,7 +35,9 @@
     <string name="log_out">Abmelden</string>
     <string name="basket_description">Sie müssen angemeldet sein, um fortzufahren</string>
     <string name="empty_cart_message">Ihr Warenkorb ist leer</string>
+    <string name="go_to_home_page">Gehe zur Startseite</string>
     <string name="log_out_dialog">Möchten Sie sich wirklich abmelden?</string>
+    <string name="confirm_exit_dialog">Möchten Sie die App wirklich verlassen?</string>
     <string name="exit">Ausgang</string>
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
@@ -50,4 +52,7 @@
     <string name="french">Französisch</string>
     <string name="product_added_to_cart">Das Produkt wurde dem Warenkorb hinzugefügt</string>
     <string name="product_already_in_cart">Das Produkt befindet sich bereits in Ihrem Warenkorb</string>
+    <string name="product_removed_from_cart">Das Produkt wurde aus Ihrem Warenkorb entfernt</string>
+    <string name="unexpected_error">Es ist ein unerwarteter Fehler aufgetreten</string>
+    <string name="order_received">Ihre Bestellung wurde erhalten</string>
 </resources>

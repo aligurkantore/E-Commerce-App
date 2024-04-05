@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.e_commerceapp.R
@@ -23,6 +24,8 @@ import com.example.e_commerceapp.util.Constants.TRY
 import com.example.e_commerceapp.util.Constants.USD
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
 import java.util.Locale
 
 fun ImageView.loadImage(url: String) {
@@ -75,26 +78,51 @@ fun Fragment.setUpBottomSheetDialog(
     }
 }
 
-fun Context.changeLanguage(languageCode: String) {
+fun Context.changeLanguage(languageCode: String): Boolean {
     val locale = Locale(languageCode)
     Locale.setDefault(locale)
     val config = Configuration()
     config.locale = locale
     resources.updateConfiguration(config, resources.displayMetrics)
+    return true
 }
 
 fun Double.convertCurrency(fromCurrency: String, toCurrency: String): Double {
     val currencyRates = mapOf(
-        USD to 1.0,
-        GBP to 0.80,
-        EUR to 0.90,
-        TRY to 32.0
+        USD to 1.26,
+        GBP to 1.0,
+        EUR to 1.17,
+        TRY to 40.21
     )
 
     val rateFrom = currencyRates[fromCurrency] ?: error("Invalid fromCurrency")
     val rateTo = currencyRates[toCurrency] ?: error("Invalid toCurrency")
 
     return this * (rateTo / rateFrom)
+}
+
+fun Double.convertAndFormatCurrency(
+    fromCurrency: String,
+    toCurrency: String,
+    currencySymbols: Map<String, String>,
+): String {
+    val convertedPrice = this.convertCurrency(fromCurrency, toCurrency)
+    val currencySymbol = currencySymbols.getOrDefault(toCurrency, "$")
+    return String.format("%s%.2f", currencySymbol, convertedPrice)
+}
+
+fun Context.getCurrencySymbols(): Map<String, String> {
+    return mapOf(
+        GBP to "£",
+        TRY to "₺",
+        EUR to "€",
+        USD to "$"
+    )
+}
+
+fun Double.formatCurrency(locale: Locale = Locale.getDefault()): String {
+    val decimalFormat = DecimalFormat("#,##0.00", DecimalFormatSymbols(locale))
+    return decimalFormat.format(this)
 }
 
 fun showMessage(context: Context, text: String) {

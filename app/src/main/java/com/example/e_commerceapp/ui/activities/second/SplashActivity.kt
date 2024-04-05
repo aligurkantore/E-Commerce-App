@@ -45,7 +45,7 @@ class SplashActivity : AppCompatActivity() {
         }
     }
 
-    private fun setLanguage(){
+    private fun setLanguage() {
         val language = BaseShared.getString(this, LANGUAGE, EN)
         if (language != null) {
             changeLanguage(language)
