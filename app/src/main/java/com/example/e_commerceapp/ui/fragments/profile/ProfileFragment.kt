@@ -112,7 +112,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
                         isLoggedIn && position == 7 -> {
                             showLogoutDialog()
                             return
-                            // return kullanmamın sebebi actionId ye atanmaması ve return ile fundan çıkış
                         }
 
                         else -> R.id.action_profileFragment_to_categoryDetailFragment
@@ -193,8 +192,8 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
 
     private fun updateLanguageViews() {
         val selectedLanguage =
-            BaseShared.getString(mContext, LANGUAGE_NAME, "") ?: ""
-        val selectedFlag = BaseShared.getInt(mContext, FLAG, 0)
+            BaseShared.getString(mContext, LANGUAGE_NAME, mContext.getString(R.string.english))
+        val selectedFlag = BaseShared.getInt(mContext, FLAG, R.drawable.united_kingdom)
 
         binding?.apply {
             textLanguages.text = selectedLanguage
@@ -224,7 +223,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
 
     private fun updateCurrencyViews() {
         val selectedCurrency =
-            BaseShared.getString(mContext, CURRENCY, USD) ?: ""
+            BaseShared.getString(mContext, CURRENCY, USD)
 
         binding?.apply {
             textCurrency.text = selectedCurrency

@@ -17,7 +17,7 @@ class ProductAdapter(
     private var context: Context,
     private var productList: List<ProductResponseDataItem>,
     private val navigateToDetail: (ProductResponseDataItem) -> Unit,
-    private val addToCart: ItemClickListener
+    private val addToCart: ItemClickListener,
 ) : RecyclerView.Adapter<ProductAdapter.ProductVH>() {
 
 
@@ -37,19 +37,15 @@ class ProductAdapter(
 
             val currency = BaseShared.getString(context, CURRENCY, USD)
             val currencySymbols = context.getCurrencySymbols()
-
-            val convertedPrice =
+            textPrice.text =
                 productData.price?.convertAndFormatCurrency(USD, currency ?: USD, currencySymbols)
-            textPrice.text = convertedPrice
 
             linearLayoutAddToCart.setOnClickListener { addToCart.onAddToCartClicked(productData) }
             constraintProduct.setOnClickListener { navigateToDetail.invoke(productData) }
         }
     }
 
-    override fun getItemCount(): Int {
-        return productList.size
-    }
+    override fun getItemCount(): Int = productList.size
 
     interface ItemClickListener {
         fun onAddToCartClicked(data: ProductResponseDataItem)

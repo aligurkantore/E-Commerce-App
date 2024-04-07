@@ -1,19 +1,20 @@
 package com.example.e_commerceapp.ui.adapters.cart
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.e_commerceapp.base.BaseShared
 import com.example.e_commerceapp.models.datamodels.product.ProductResponseDataItem
 import com.example.e_commerceapp.databinding.ItemCartsBinding
-import com.example.e_commerceapp.util.Constants
 import com.example.e_commerceapp.util.Constants.CURRENCY
 import com.example.e_commerceapp.helper.FireBaseDataManager
+import com.example.e_commerceapp.util.Constants.USD
 import com.example.e_commerceapp.util.convertAndFormatCurrency
+import com.example.e_commerceapp.util.formatCurrency
 import com.example.e_commerceapp.util.getCurrencySymbols
 import com.example.e_commerceapp.util.loadImage
+import java.util.Locale
 
 class CartAdapter(
     private var context: Context,
@@ -22,7 +23,7 @@ class CartAdapter(
     private var listener: TotalPriceListener
 ) : RecyclerView.Adapter<CartAdapter.CartVH>() {
 
-    val currency = BaseShared.getString(context, CURRENCY, Constants.USD)
+    val currency = BaseShared.getString(context, CURRENCY, USD)
     private val currencySymbols = context.getCurrencySymbols()
 
     inner class CartVH(val binding: ItemCartsBinding) : RecyclerView.ViewHolder(binding.root)
@@ -37,14 +38,11 @@ class CartAdapter(
             val cartData = cartList[position]
             cartData.image?.let { imageProduct.loadImage(it) }
             textTitle.text = cartData.title
-            textPrice.text = cartData.price.toString()
-
-            val convertedPrice = cartData.price?.convertAndFormatCurrency(
-                Constants.USD,
-                currency ?: Constants.USD,
+            textPrice.text = cartData.price?.convertAndFormatCurrency(
+                USD,
+                currency ?: USD,
                 currencySymbols
             )
-            textPrice.text = convertedPrice
 
             imagePlus.setOnClickListener {
                 cartData.count++
@@ -59,7 +57,7 @@ class CartAdapter(
                         val productId = cartData.id
                         FireBaseDataManager.removeFromCart(context, productId.toString())
                         cartList.remove(cartData)
-                        notifyItemRemoved(position)
+                        notifyItemRemoved(holder.adapterPosition)
                     }
                 }
                 listener.onTotalPriceUpdated(calculateTotalPrice())
@@ -68,18 +66,14 @@ class CartAdapter(
         }
     }
 
-    override fun getItemCount(): Int {
-        return cartList.size
-    }
+    override fun getItemCount(): Int = cartList.size
 
 
     fun calculateTotalPrice(): String {
         val totalPrice = cartList.sumByDouble { (it.price ?: 0.0) * it.count }
-        Log.d("agt", "calculateTotalPrice: $totalPrice")
-        Log.d("agt", "calculateTotalCount: ${cartList.sumByDouble { it.count.toDouble() }}")
         return totalPrice.convertAndFormatCurrency(
-            Constants.USD,
-            currency ?: Constants.USD,
+            USD,
+            currency ?: USD,
             currencySymbols
         )
     }

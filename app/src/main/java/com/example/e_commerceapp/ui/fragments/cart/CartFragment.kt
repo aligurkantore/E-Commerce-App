@@ -1,7 +1,6 @@
 package com.example.e_commerceapp.ui.fragments.cart
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.e_commerceapp.R
 import com.example.e_commerceapp.ui.adapters.cart.CartAdapter
 import com.example.e_commerceapp.base.BaseFragment
-import com.example.e_commerceapp.base.BaseShared
 import com.example.e_commerceapp.models.datamodels.product.ProductResponseDataItem
 import com.example.e_commerceapp.databinding.FragmentCartBinding
 import com.example.e_commerceapp.util.AppUtils
@@ -20,7 +18,6 @@ import com.example.e_commerceapp.util.Constants.DETAIL
 import com.example.e_commerceapp.util.goneIf
 import com.example.e_commerceapp.util.navigateSafe
 import com.example.e_commerceapp.util.navigateSafeWithArgs
-import com.example.e_commerceapp.util.observeNonNull
 import com.example.e_commerceapp.util.visibleIf
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
@@ -78,11 +75,7 @@ class CartFragment : BaseFragment<FragmentCartBinding, CartViewModel>() {
         }
     }
 
-    override fun setUpObservers() {
-        viewModel.totalPrice.observeNonNull(viewLifecycleOwner){
-            binding?.textViewTotalPrice?.text = it
-        }
-    }
+    override fun setUpObservers() {}
 
     private fun setUpAdapter() {
         cartAdapter = CartAdapter(

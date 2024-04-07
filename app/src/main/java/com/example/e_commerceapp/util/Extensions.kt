@@ -14,7 +14,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.e_commerceapp.R
@@ -121,7 +120,7 @@ fun Context.getCurrencySymbols(): Map<String, String> {
 }
 
 fun Double.formatCurrency(locale: Locale = Locale.getDefault()): String {
-    val decimalFormat = DecimalFormat("#,##0.00", DecimalFormatSymbols(locale))
+    val decimalFormat = DecimalFormat("#.##0,00", DecimalFormatSymbols(locale))
     return decimalFormat.format(this)
 }
 

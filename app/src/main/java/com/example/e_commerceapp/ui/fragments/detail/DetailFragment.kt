@@ -22,7 +22,6 @@ import com.example.e_commerceapp.util.navigateSafe
 import com.example.e_commerceapp.util.observeNonNull
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-
 @AndroidEntryPoint
 class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
 
@@ -75,9 +74,8 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
 
             val currency = BaseShared.getString(mContext, CURRENCY, USD)
             val currencySymbols = mContext.getCurrencySymbols()
-            val convertedPrice =
+            textViewPrice.text =
                 data.price?.convertAndFormatCurrency(USD, currency ?: USD, currencySymbols)
-            textViewPrice.text = convertedPrice
 
             buttonAddToCart.setOnClickListener {
                 checkUserLoginStatus(data)

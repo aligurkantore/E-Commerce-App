@@ -26,7 +26,5 @@ class CurrencyAdapter(
         }
     }
 
-    override fun getItemCount(): Int {
-        return currencyList.size
-    }
+    override fun getItemCount(): Int = currencyList.size
 }

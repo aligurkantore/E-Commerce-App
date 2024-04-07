@@ -40,9 +40,7 @@ class ProfileAdapter(
         }
     }
 
-    override fun getItemCount(): Int {
-        return categoryList.size
-    }
+    override fun getItemCount(): Int = categoryList.size
 
     interface ItemClickListener {
         fun onClick(categoryName: String, position: Int)

@@ -1,12 +1,50 @@
 package com.example.e_commerceapp.base
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import retrofit2.Response
+import java.lang.Exception
 
 abstract class BaseViewModel : ViewModel() {
+
     val auth = FirebaseAuth.getInstance()
-    protected var job: Job? = null
+    private var job: Job? = null
+
+    private var isLoading = MutableLiveData<Boolean>()
+
+    private var error = MutableLiveData<String>()
+
+
+    protected fun <T> performRequest(
+        liveData: MutableLiveData<T>,
+        request: suspend () -> Response<T>,
+    ) {
+        isLoading.value = true
+        job = viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val response = request.invoke()
+                withContext(Dispatchers.Main) {
+                    if (response.isSuccessful) {
+                        response.body()?.let {
+                            liveData.postValue(it)
+                        }
+                    } else {
+                        error.postValue(response.message())
+                    }
+                }
+            } catch (e: Exception) {
+                error.postValue(e.message ?: "Unknown error occurred.")
+            } finally {
+                isLoading.postValue(false)
+            }
+        }
+    }
 
 
     fun isLoggedIn(): Boolean {
@@ -15,46 +53,9 @@ abstract class BaseViewModel : ViewModel() {
     }
 
 
-    /*
-
-    private val _productLiveData = MutableLiveData<ProductResponseData>()
-    val productLiveData: LiveData<ProductResponseData> = _productLiveData
-
-    private val _categoryLiveData = MutableLiveData<Categories>()
-    val categoryLiveData: LiveData<Categories> = _categoryLiveData
-
-
-
-    enum class QueryType{
-        Products,
-        Categories
+    override fun onCleared() {
+        super.onCleared()
+        job?.cancel()
     }
 
-    fun fetchData(
-        queryType: QueryType,
-        onSuccess: (Any) -> Unit,
-        onError: (String) -> Unit
-    ) {
-        viewModelScope.launch(Dispatchers.IO){
-            val response = when(queryType){
-                QueryType.Products -> repository.getProducts()
-                QueryType.Categories -> repository.getCategories()
-            }
-            withContext(Dispatchers.Main){
-                if (response.isSuccessful){
-                    response.body()?.let {
-                        onSuccess(it)
-                        when(queryType){
-                            QueryType.Products -> _productLiveData.postValue(it as ProductResponseData)
-                            QueryType.Categories -> _categoryLiveData.postValue(it as Categories)
-                        }
-                    } ?: onError("${queryType.name} response body is null")
-                } else {
-                    onError("Failed to get ${queryType.name.toLowerCase()}: ${response.message()}")
-                }
-            }
-        }
-    }
-
-     */
 }
