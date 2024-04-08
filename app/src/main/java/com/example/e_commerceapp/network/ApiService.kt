@@ -1,4 +1,4 @@
-package com.example.e_commerceapp.api
+package com.example.e_commerceapp.network
 
 import com.example.e_commerceapp.models.datamodels.product.Category
 import com.example.e_commerceapp.models.datamodels.product.ProductResponseData

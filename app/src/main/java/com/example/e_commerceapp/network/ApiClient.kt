@@ -1,4 +1,4 @@
-package com.example.e_commerceapp.api
+package com.example.e_commerceapp.network
 
 import com.example.e_commerceapp.util.Constants.BASE_URL
 import com.example.e_commerceapp.util.Constants.TIME_OUT
