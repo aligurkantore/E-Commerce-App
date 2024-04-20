@@ -55,4 +55,6 @@
     <string name="product_removed_from_cart">Ürün sepetinizden silindi</string>
     <string name="unexpected_error">Beklenmeyen bir hata oluştu</string>
     <string name="order_received">Siparişiniz alınmıştır</string>
+    <string name="warning">Uyarı</string>
+    <string name="no_internet">İnternet bağlantınız bulunmamaktadır.</string>
 </resources>

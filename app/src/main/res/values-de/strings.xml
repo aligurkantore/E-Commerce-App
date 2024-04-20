@@ -55,4 +55,6 @@
     <string name="product_removed_from_cart">Das Produkt wurde aus Ihrem Warenkorb entfernt</string>
     <string name="unexpected_error">Es ist ein unerwarteter Fehler aufgetreten</string>
     <string name="order_received">Ihre Bestellung wurde erhalten</string>
+    <string name="warning">Warnung</string>
+    <string name="no_internet">Sie haben keine Internetverbindung.</string>
 </resources>

@@ -50,7 +50,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding, RegisterViewModel
         viewModel.apply {
             registrationResult.observeNonNull(viewLifecycleOwner) {
                 if (it) {
-                    navigateSafe(R.id.action_registerFragment_to_profileFragment)
+                    navigateSafe(R.id.action_registerFragment_to_dashBoardFragment)
                 } else {
                     showMessage(mContext,getString(R.string.register_failed))
                 }

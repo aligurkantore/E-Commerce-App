@@ -59,7 +59,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
         viewModel.apply {
             loginResult.observeNonNull(viewLifecycleOwner) {
                 if (it) {
-                    navigateSafe(R.id.action_loginFragment_to_profileFragment)
+                    navigateSafe(R.id.action_loginFragment_to_dashBoardFragment)
                 } else {
                     showMessage(mContext,getString(R.string.login_failed))
                 }

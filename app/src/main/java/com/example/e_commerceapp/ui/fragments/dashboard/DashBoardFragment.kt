@@ -16,6 +16,7 @@ import com.example.e_commerceapp.databinding.FragmentDashBoardBinding
 import com.example.e_commerceapp.util.AppUtils
 import com.example.e_commerceapp.util.Constants.DETAIL
 import com.example.e_commerceapp.helper.FireBaseDataManager
+import com.example.e_commerceapp.ui.dialogs.CustomDialog
 import com.example.e_commerceapp.util.navigateSafe
 import com.example.e_commerceapp.util.navigateSafeWithArgs
 import com.example.e_commerceapp.util.observeNonNull
@@ -26,6 +27,7 @@ class DashBoardFragment : BaseFragment<FragmentDashBoardBinding, DashBoardViewMo
 
     private lateinit var adapterCategory: CategoryAdapter
     private var adapterProduct: ProductAdapter? = null
+    private var isWelcomeDialogShown = false
 
     override val viewModelClass: Class<out DashBoardViewModel>
         get() = DashBoardViewModel::class.java
@@ -45,6 +47,10 @@ class DashBoardFragment : BaseFragment<FragmentDashBoardBinding, DashBoardViewMo
             getCategories()
         }
         setUpAppBar()
+        if (viewModel.isLoggedIn() && !isWelcomeDialogShown && netWorkUtils.isInternetAvailable(mContext)) {
+            showWelcomeDialog()
+            isWelcomeDialogShown = true
+        }
     }
 
     override fun setUpListeners() {}
@@ -119,6 +125,16 @@ class DashBoardFragment : BaseFragment<FragmentDashBoardBinding, DashBoardViewMo
             putSerializable(DETAIL, data.id)
         }
         navigateSafeWithArgs(R.id.action_dashBoardFragment_to_detailFragment, bundle)
+    }
+
+    private fun showWelcomeDialog() {
+        CustomDialog(
+            mContext,
+            getString(R.string.welcome),
+            getString(R.string.welcome_dialog),
+            getString(R.string.ok),
+            showNegativeButton = false
+        ).show()
     }
 
     private fun setUpAppBar() {

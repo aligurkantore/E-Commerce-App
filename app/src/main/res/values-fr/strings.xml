@@ -55,4 +55,6 @@
     <string name="product_removed_from_cart">Le produit a été supprimé de votre panier</string>
     <string name="unexpected_error">Une erreur inattendue s\'est produite</string>
     <string name="order_received">Votre commande a été reçue</string>
+    <string name="warning">Attention</string>
+    <string name="no_internet">Vous n\'avez pas de connexion Internet.</string>
 </resources>

@@ -45,7 +45,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
     private lateinit var languageAdapter: LanguageAdapter
     private lateinit var currencyAdapter: CurrencyAdapter
     private lateinit var setCategories: SetCategories
-    private var isWelcomeDialogShown = false
     private var dialog: Dialog? = null
 
     override val viewModelClass: Class<out ProfileViewModel>
@@ -131,10 +130,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
             buttonRegister goneIf isVisible
             val email: String? = BaseShared.getString(mContext, EMAIL, "")
             binding?.textViewName?.text = email ?: ""
-            if (isVisible && !isWelcomeDialogShown) {
-                showWelcomeDialog()
-                isWelcomeDialogShown = true
-            }
         }
     }
 
@@ -248,15 +243,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
         dialog?.show()
     }
 
-    private fun showWelcomeDialog() {
-        CustomDialog(
-            mContext,
-            getString(R.string.welcome),
-            getString(R.string.welcome_dialog),
-            getString(R.string.ok),
-            showNegativeButton = false
-        ).show()
-    }
 
     private fun showLogoutDialog() {
         CustomDialog(

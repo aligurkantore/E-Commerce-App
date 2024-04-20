@@ -55,4 +55,7 @@
     <string name="product_removed_from_cart">Product removed from your cart</string>
     <string name="unexpected_error">An unexpected error occurred</string>
     <string name="order_received">Your order has been received</string>
+    <string name="warning">Warning</string>
+    <string name="no_internet">You don\'t have an internet connection.</string>
+
 </resources>
