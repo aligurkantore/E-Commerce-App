@@ -52,10 +52,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
                     viewModel.resetPassword(email)
                 }
             }
-
-            binding?.textViewContinueWithRegister?.setOnClickListener {
-                navigateSafe(R.id.action_loginFragment_to_registerFragment)
-            }
         }
     }
 

@@ -2,6 +2,7 @@ package com.example.e_commerceapp.helper
 
 import android.content.Context
 import com.example.e_commerceapp.R
+import com.example.e_commerceapp.base.BaseShared
 import com.example.e_commerceapp.models.datamodels.product.ProductResponseDataItem
 import com.example.e_commerceapp.util.showMessage
 import com.google.firebase.auth.FirebaseAuth
@@ -29,6 +30,7 @@ object FireBaseDataManager {
                 } else {
                     productRef.setValue(data)
                         .addOnSuccessListener {
+                            BaseShared.removeKey(context,"count_${data.id}")
                             showMessage(context, context.getString(R.string.product_added_to_cart))
                         }
                         .addOnFailureListener {
@@ -44,15 +46,33 @@ object FireBaseDataManager {
     }
 
 
-    fun removeFromCart(context: Context,productId: String) {
+    fun removeFromCart(context: Context, productId: String) {
         val productRef = userRef.child(productId)
 
         productRef.removeValue()
             .addOnSuccessListener {
-               // showMessage(context, context.getString(R.string.product_removed_from_cart))
             }
             .addOnFailureListener {
                 showMessage(context, context.getString(R.string.unexpected_error))
             }
+    }
+
+    fun removeAllFromCart(context: Context) {
+        userRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (productSnapshot in snapshot.children) {
+                    productSnapshot.ref.removeValue()
+                        .addOnSuccessListener {
+                        }
+                        .addOnFailureListener {
+                            showMessage(context, context.getString(R.string.unexpected_error))
+                        }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                showMessage(context, context.getString(R.string.unexpected_error))
+            }
+        })
     }
 }

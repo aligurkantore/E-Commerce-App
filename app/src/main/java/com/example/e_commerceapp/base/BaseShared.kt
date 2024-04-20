@@ -38,4 +38,13 @@ object BaseShared {
     fun getInt(context: Context, key: String, defaultValue: Int): Int {
         return getSharedPreferences(context).getInt(key, defaultValue)
     }
+
+    fun saveDouble(context: Context, key: String, value: Double) {
+        return getSharedPreferences(context).edit().putString(key, value.toString()).apply()
+    }
+
+    fun getDouble(context: Context, key: String, defaultValue: Double): Double {
+        val stringValue = getSharedPreferences(context).getString(key, defaultValue.toString())
+        return stringValue?.toDoubleOrNull() ?: defaultValue
+    }
 }

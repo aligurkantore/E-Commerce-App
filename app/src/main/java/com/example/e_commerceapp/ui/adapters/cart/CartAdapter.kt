@@ -11,16 +11,14 @@ import com.example.e_commerceapp.util.Constants.CURRENCY
 import com.example.e_commerceapp.helper.FireBaseDataManager
 import com.example.e_commerceapp.util.Constants.USD
 import com.example.e_commerceapp.util.convertAndFormatCurrency
-import com.example.e_commerceapp.util.formatCurrency
 import com.example.e_commerceapp.util.getCurrencySymbols
 import com.example.e_commerceapp.util.loadImage
-import java.util.Locale
 
 class CartAdapter(
     private var context: Context,
     private var cartList: MutableList<ProductResponseDataItem>,
     private var navigateToDetail: (ProductResponseDataItem) -> Unit,
-    private var listener: TotalPriceListener
+    private var listener: TotalPriceListener,
 ) : RecyclerView.Adapter<CartAdapter.CartVH>() {
 
     val currency = BaseShared.getString(context, CURRENCY, USD)
@@ -44,11 +42,19 @@ class CartAdapter(
                 currencySymbols
             )
 
+            val previousCount = BaseShared.getInt(context, "count_${cartData.id}", 0)
+            if (previousCount <= 0) cartData.count = 1
+            else cartData.count = previousCount
+
+            textCount.text = cartData.count.toString()
+
             imagePlus.setOnClickListener {
                 cartData.count++
                 textCount.text = cartData.count.toString()
-                listener.onTotalPriceUpdated(calculateTotalPrice())
+                BaseShared.saveInt(context, "count_${cartData.id}", cartData.count)
+                listener.onTotalPriceUpdated(calculateTotalPrice(), cartData.count)
             }
+
             imageMinus.setOnClickListener {
                 if (cartData.count > 0) {
                     cartData.count--
@@ -60,7 +66,8 @@ class CartAdapter(
                         notifyItemRemoved(holder.adapterPosition)
                     }
                 }
-                listener.onTotalPriceUpdated(calculateTotalPrice())
+                listener.onTotalPriceUpdated(calculateTotalPrice(), cartData.count)
+                BaseShared.saveInt(context, "count_${cartData.id}", cartData.count)
             }
             constraintCart.setOnClickListener { navigateToDetail.invoke(cartData) }
         }
@@ -69,16 +76,12 @@ class CartAdapter(
     override fun getItemCount(): Int = cartList.size
 
 
-    fun calculateTotalPrice(): String {
+    private fun calculateTotalPrice(): String {
         val totalPrice = cartList.sumByDouble { (it.price ?: 0.0) * it.count }
-        return totalPrice.convertAndFormatCurrency(
-            USD,
-            currency ?: USD,
-            currencySymbols
-        )
+        return totalPrice.convertAndFormatCurrency(USD, currency ?: USD, currencySymbols)
     }
 
     interface TotalPriceListener {
-        fun onTotalPriceUpdated(totalPrice: String)
+        fun onTotalPriceUpdated(totalPrice: String, count: Int)
     }
 }

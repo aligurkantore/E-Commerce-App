@@ -10,11 +10,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.e_commerceapp.R
 import com.example.e_commerceapp.ui.adapters.cart.CartAdapter
 import com.example.e_commerceapp.base.BaseFragment
+import com.example.e_commerceapp.base.BaseShared
 import com.example.e_commerceapp.models.datamodels.product.ProductResponseDataItem
 import com.example.e_commerceapp.databinding.FragmentCartBinding
 import com.example.e_commerceapp.util.AppUtils
 import com.example.e_commerceapp.helper.FireBaseDataManager
+import com.example.e_commerceapp.util.Constants
 import com.example.e_commerceapp.util.Constants.DETAIL
+import com.example.e_commerceapp.util.convertAndFormatCurrency
+import com.example.e_commerceapp.util.getCurrencySymbols
+import com.example.e_commerceapp.util.gone
 import com.example.e_commerceapp.util.goneIf
 import com.example.e_commerceapp.util.navigateSafe
 import com.example.e_commerceapp.util.navigateSafeWithArgs
@@ -50,10 +55,11 @@ class CartFragment : BaseFragment<FragmentCartBinding, CartViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setUpAdapter()
         if (viewModel.isLoggedIn()) {
             checkUserLoginStatus(true)
             getProducts()
+            setUpAdapter()
+            if (cartItems.isEmpty()) binding?.cardViewAreaBottom?.gone()
         } else {
             checkUserLoginStatus(false)
             animationBasket()
@@ -69,7 +75,7 @@ class CartFragment : BaseFragment<FragmentCartBinding, CartViewModel>() {
             }
 
             buttonBuy.setOnClickListener {
-                FireBaseDataManager.removeFromCart(mContext, cartItems.first().id.toString())
+                FireBaseDataManager.removeAllFromCart(mContext)
                 navigateSafe(R.id.action_cartFragment_to_orderFragment)
             }
         }
@@ -83,7 +89,7 @@ class CartFragment : BaseFragment<FragmentCartBinding, CartViewModel>() {
             cartItems,
             ::onClickAdapterItem,
             object : CartAdapter.TotalPriceListener {
-                override fun onTotalPriceUpdated(totalPrice: String) {
+                override fun onTotalPriceUpdated(totalPrice: String, count: Int) {
                     binding?.textViewTotalPrice?.text = totalPrice
                 }
             })
@@ -101,18 +107,23 @@ class CartFragment : BaseFragment<FragmentCartBinding, CartViewModel>() {
 
         userRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                cartItems.clear()
+                val tempList: MutableList<ProductResponseDataItem> = mutableListOf()
                 for (itemSnapshot in snapshot.children) {
                     val item = itemSnapshot.getValue(ProductResponseDataItem::class.java)
                     if (item != null) {
-                        cartItems.add(item)
+                        tempList.add(item)
                     }
                 }
-                cartAdapter.notifyDataSetChanged()
+                cartItems.clear()
+                cartItems.addAll(tempList)
                 updateTotalPrice()
-                progressBarUtil.hideProgressBar()
                 checkItemsInAdapter()
+                progressBarUtil.hideProgressBar()
+                cartAdapter.notifyDataSetChanged()
+
             }
+
+
 
             override fun onCancelled(error: DatabaseError) {
                 // Handle onCancelled
@@ -121,8 +132,14 @@ class CartFragment : BaseFragment<FragmentCartBinding, CartViewModel>() {
     }
 
     private fun updateTotalPrice() {
-        val totalPrice = cartAdapter.calculateTotalPrice()
-        binding?.textViewTotalPrice?.text = totalPrice
+        val currency = BaseShared.getString(mContext, Constants.CURRENCY, Constants.USD)
+        val currencySymbols = mContext.getCurrencySymbols()
+        val totalPrice = cartItems.sumByDouble {
+            val count = BaseShared.getInt(mContext, "count_${it.id}", 1)
+            (it.price)?.times(count) ?: 0.0
+        }
+        val newTotalPrice = totalPrice.convertAndFormatCurrency(Constants.USD, currency ?: Constants.USD, currencySymbols)
+        binding?.textViewTotalPrice?.text = newTotalPrice
     }
 
     private fun checkUserLoginStatus(isLogin: Boolean) {

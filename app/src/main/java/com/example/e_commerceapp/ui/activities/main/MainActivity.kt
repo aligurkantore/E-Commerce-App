@@ -6,11 +6,11 @@ import android.view.View
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.setupWithNavController
 import com.example.e_commerceapp.R
 import com.example.e_commerceapp.databinding.ActivityMainBinding
 import com.example.e_commerceapp.ui.fragments.profile.ProfileFragment
 import com.example.e_commerceapp.ui.dialogs.CustomDialog
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -18,7 +18,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
-    private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var navHostFragment: NavHostFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,10 +46,18 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        binding.let {
-            bottomNavigationView = it.bottomNavigationView
-            NavigationUI.setupWithNavController(bottomNavigationView, navController)
+        binding.bottomNavigationView.apply {
+            setupWithNavController(navController)
+            setOnItemSelectedListener { item ->
+                NavigationUI.onNavDestinationSelected(item,navController)
+                navController.popBackStack(item.itemId, false)
+                true
+            }
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp() || super.onSupportNavigateUp()
     }
 
     override fun onBackPressed() {
