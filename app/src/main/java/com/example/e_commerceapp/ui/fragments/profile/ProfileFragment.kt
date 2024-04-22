@@ -98,7 +98,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
     private fun setUpAdapter() {
         val allCategories = setCategories.setProfileCategories(mContext)
         val notLoggedInCustomer =
-            allCategories.filterIndexed { index, _ -> listOf(2, 3, 4, 6).contains(index) }
+            allCategories.filterIndexed { index, _ -> listOf(1, 2, 3, 4).contains(index) }
         val isLoggedIn = viewModel.isLoggedIn()
         val categories = if (isLoggedIn) allCategories else notLoggedInCustomer
 
@@ -107,7 +107,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
                 override fun onClick(categoryName: String, position: Int) {
                     BaseShared.saveString(mContext, CATEGORY, categoryName)
                     val actionId = when {
-                        (isLoggedIn && position == 2) || (!isLoggedIn && position == 0) -> R.id.action_profileFragment_to_cartFragment
+                        (isLoggedIn && position == 2) || (!isLoggedIn && position == 1) -> R.id.action_profileFragment_to_cartFragment
                         isLoggedIn && position == 7 -> {
                             showLogoutDialog()
                             return

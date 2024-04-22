@@ -40,6 +40,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setArgs()
+        progressBarUtil.showProgressBar()
     }
 
     override fun setUpListeners() {}
@@ -47,6 +48,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
     override fun setUpObservers() {
         viewModel.productDetailLiveData.observeNonNull(viewLifecycleOwner) {
             setUi(it)
+            progressBarUtil.hideProgressBar()
         }
     }
 
